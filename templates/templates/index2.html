@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <style>
+        :root{
+          /*--f0f0f0-color: #f0f0f0;
+          --e9e9ea-color: #e9e9ea;
+          --333-color: #333;
+          --fff-color: #fff;
+          --000-color: #000;
+          --367af6-color: #367af6;
+          --white-color: white;
+          --blue-color: blue;
+          --grey-color: grey;*/
+          --f0f0f0-color: #040a1a;
+          --e9e9ea-color: #403d80;/* #1d2332;*/
+          --333-color: #f0f0f0;
+          --fff-color: black;
+          --000-color: #cdd5f2;
+          --367af6-color: #3375e5;
+          --white-color: #cdd5f2;
+          --blue-color: #6495ed;
+          --grey-color: #3477ea;
+        }
+        /* #5c3884 */
+        .dark-theme{
+          --f0f0f0-color: #040a1a;
+          --e9e9ea-color: #403d80;/* #1d2332;*/
+          --333-color: #f0f0f0;
+          --fff-color: black;
+          --000-color: #cdd5f2;
+          --367af6-color: #3375e5;
+          --white-color: #cdd5f2;
+          --blue-color: #6495ed;
+          --grey-color: #3477ea;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(45deg, #010758, #490d61);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background-color: var(--e9e9ea-color);
+            border-radius: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: var(--333-color);
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            margin: 10px 0;
+            width: 93%;
+            border: 1px solid var(--fff-color);
+            border-radius: 5px;
+            background: #403d80;
+            color: var(--000-color);
+        }
+        input[type="file"] {
+            display: none;
+        }
+
+        button{
+            background-color: var(--e9e9ea-color);
+            color: grey;
+            border: 1px solid var(--fff-color);
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            height: 40px;
+            width: 79%;
+            color: #010758;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #ff2963;
+        }
+        #start{
+            background-color: var(--e9e9ea-color);
+            color: #010758;
+            border: 1px solid var(--fff-color);
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #start:hover {
+            background-color: #ff2963;
+        }
+
+        .user-profile {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: var(--e9e9ea-color);
+            font-weight: bold;
+            border: 1px solid var(--fff-color);
+            color: #fff;
+        }
+
+        .user-profile img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .change-icon-btn {
+            background-color: #ff2963;
+            color: #010758;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .change-icon-btn:hover {
+            background-color: #ff2963;
+        }
+        .custom-file-input{
+            background-color: transparent;
+            color: #010758;
+            border: 1px solid var(--e9e9ea-color);
+            cursor: pointer;
+            border-radius: 5px;
+            width: 90%;
+            transition: background-color 0.3s;
+        }
+
+        .custom-file-input:hover {
+            background-color: #ff2963;
+        }
+        .custom-file-div{
+            background-color: var(--e9e9ea-color);
+            color: #010758;
+            border: 1px solid var(--fff-color);
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 5px;
+            width: 90%;
+            transition: background-color 0.3s;
+        }
+        p{
+          font-size: 12px;
+          font-weight: bold;
+        }
+        #links{
+          font-size: 12px;
+          font-weight: bold;
+          color: #ff2963;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Your Profile</h1>
+        <div class="user-profile" id="user-profile">
+            <div>
+                <img src="default_avatar.png" alt="User Avatar">
+                <span id="username-display">Guest</span>
+            </div>
+            <button class="change-icon-btn" id="change-icon-btn">Change Icon</button>
+        </div>
+        <form id="profile-form">
+            <input type="text" id="username" placeholder="Enter username" maxlength="8">
+            <div class="custom-file-div">
+              <label for="avatar" class="custom-file-input">Choose a Prifile picture</label>
+            </div>
+            <input type="file" id="avatar" accept="image/*"><br>
+            <p>When starting, you accept the <a href="privacy-policy-user-regulations" id="links">privacy policy</a> and the <a href="privacy-policy-user-regulations" id="links">user regulations</a></p>
+            <button type="submit" class="submit-btn">Save Profile</button>
+            <a id="start" href="AIlury">Start</a><br>
+        </form>
+        <br>
+    </div>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const usernameInput = document.getElementById("username");
+            const avatarInput = document.getElementById("avatar");
+            const userProfile = document.getElementById("user-profile");
+            const usernameDisplay = document.getElementById("username-display");
+            const changeIconButton = document.getElementById("change-icon-btn");
+
+            // Load user profile from localStorage
+            loadUserProfile();
+
+            function loadUserProfile() {
+                const savedUsername = localStorage.getItem("username");
+                const savedAvatar = localStorage.getItem("avatar");
+
+                if (savedUsername) {
+                    usernameDisplay.textContent = savedUsername;
+                    usernameInput.value = savedUsername;
+                }
+
+                if (savedAvatar) {
+                    userProfile.querySelector("img").src = savedAvatar;
+                    
+                }
+            }
+            // Save user profile to localStorage
+            function saveUserProfile(username, avatar) {
+                localStorage.setItem("username", username);
+                localStorage.setItem("avatar", avatar);
+            }
+
+            // Submit profile form
+            document.getElementById("profile-form").addEventListener("submit", function (e) {
+                e.preventDefault();
+                const username = usernameInput.value.trim();
+                const avatar = avatarInput.files[0] ? URL.createObjectURL(avatarInput.files[0]) : "";
+                saveUserProfile(username, avatar);
+                loadUserProfile();
+            });
+
+            // Change user icon
+            changeIconButton.addEventListener("click", function () {
+                avatarInput.click();
+            });
+            avatarInput.addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function () {
+                        userProfile.querySelector("img").src = reader.result;
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+        });
+        /*function change_mood(){
+          document.body.classList.toggle("dark-theme");
+        }
+        function isDarkMode() {
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // Function to update the mode information
+        function updateModeInfo() {
+            if (isDarkMode()) {
+                change_mood()
+            }else {
+                change_mood()
+            }
+        }
+
+        // Call the function initially
+        updateModeInfo();
+
+        // Listen for changes in mode preference
+        window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);*/
+    </script>
+</body>
+
+</html>
