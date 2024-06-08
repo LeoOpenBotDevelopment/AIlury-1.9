@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIlury 1.6</title
+  <link rel="icon" type="image/ico" href="templates/favicon.ico">
+  <style>
+    :root{
+      /*--primary-color: black;
+      --sekundary-color: white;
+      --grey-color: #ccc;
+      --darkgrey-color: #fff;
+      --lightcyan-color: lightcyan;
+      --cyan-color: cyan;
+      --white-color: black;
+      --bcolor-color: #ccc;
+      --ngrey-color: #ccc;*/
+      --primary-color: white;
+      --sekundary-color: black;
+      --grey-color: #0f87ff;
+      --darkgrey-color: #403d80;
+      --lightcyan-color: #7d9eff;
+      --cyan-color: darkcyan;
+      --white-color: lightgrey;
+      --bcolor-color: blue;
+      --ngrey-color: #1a1f2c;
+    }
+    /* #5c3884 */
+    .dark-theme{
+      --primary-color: white;
+      --sekundary-color: black;
+      --grey-color: #0f87ff;
+      --darkgrey-color: #403d80;
+      --lightcyan-color: #7d9eff;
+      --cyan-color: darkcyan;
+      --white-color: lightgrey;
+      --bcolor-color: blue;
+      --ngrey-color: #1a1f2c;
+    }
+    body {
+      font-family: Arial, sans-serif;
+      width: 100%;
+      min-height: 100vh;
+      background: linear-gradient(45deg, #010758, #490d61);
+      margin: 0;
+      transition: 1s;
+    }
+    input[type=text] {
+      background: transparent;/*linear-gradient(45deg, #010758, #490d61);*/
+      color: #fff;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
+    input[type=text]:focus{
+      outline: none;
+      border: none;
+    }
+
+    .chat-container {
+      max-width: 600px;
+      margin: 20px auto;
+      /*border: 1px solid var(--grey-color);*/
+      border: none;
+      border-radius: 10px;
+      background-color: var(--darkgrey-color);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      height: 100vh; /* Volle Höhe des Viewports */
+      transition: 1s;
+    }
+    .chat-container:hover{
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+
+    .chat-messages {
+      flex: 1; /* Füllt den verfügbaren Platz aus */
+      overflow-y: auto;
+      padding: 10px;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .sent {
+      /*background-color: var(--bcolor-color);*/
+      background: linear-gradient(45deg, #010758, #490d61);
+      align-self: flex-end;
+      text-align: right;
+      color: var(--primary-color);
+      /*max-width: 50%;
+      margin-left: 30%;*/
+      transition: 0.5s;
+      animation: blop2 0.5s;
+    }
+    .sent:hover{
+      box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+    }
+
+    .received {
+      /*background-color: var(--lightcyan-color);*/
+      background: linear-gradient(45deg, #010758, #490d61);
+      align-self: flex-start;
+      text-align: left;
+      color: var(--primary-color);
+      /*max-width: 50%;*/
+      transition: 0.5s;
+      animation: blop 0.5s;
+    }
+    .received:hover{
+      box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+    }
+
+    .chat-input {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-top: 1px solid #010758;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      margin-right: 10px;
+      /*border: 1px solid var(--grey-color);*/
+      border: 1px solid transparent;
+      border-radius: 3px;
+      color: #fff;
+      font-size: 10px;
+      text-align: left;
+      background: linear-gradient(45deg, #010758, #010758);
+      transition: 1s;
+    }
+
+    .chat-input button {
+      padding: 8px 15px;
+      border: none;
+      background: linear-gradient(45deg, #010758, #490d61);
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: 1s;
+    }
+    .user-input{
+      color: #010758;
+    }
+    .chat-input input:focus{
+      outline: 2px solid #0f87ff;
+      border: block;
+    }
+    .nav-links{
+      flex: 1;
+      text-align: right;
+      cursor: pointer;
+      display: none;
+    }
+    .nav-links ul li{
+      list-style: none;
+      display: inline-block;
+      padding: 8px 12px;
+      position: relative;
+    }
+    .nav-links ul li a{
+      color: var(--primary-color);
+      text-decoration: none;
+      font-size: 20px;
+      transition: 1s;
+    }
+    .nav-links ul li::after{
+      content: '';
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(45deg, #010758, #490d61);
+      display: block;
+      margin: auto;
+      transition: 0.5s;
+    }
+    .bcft{
+      background: linear-gradient(45deg, #010758, #490d61);
+      border-radius: 10px;
+      padding: 10px;
+
+    }
+    #einstellungen{
+      width: 70px;
+      height: 70px;
+      margin-left: 80%;
+      margin-top: 10px;
+      font-size: 70px;
+      color: #010758;
+      text-align: canter;
+      cursor: pointer;
+      transition: 1s;
+    }
+    #button2{
+      display: none;
+      transition: 1s;
+    }
+    #button3{
+      display: none;
+      margin-left: 5px;
+      background-color: orange;
+      transition: 1s;
+    }
+    .bcft1{
+      background: linear-gradient(45deg, #010758, #490d61);
+      border-radius: 10px;
+      padding: 10px;
+      height: 30px;
+    }
+    #nmy{
+      transition: 0.5s;
+    }
+    #nmy:hover{
+      box-shadow: 0 0 20px 0px rgba(0,0,0,0.2);
+    }
+    #messageE {
+      
+    }
+    @keyframes blop{
+      from{
+        width: 0px;
+        font-size: 0px;
+      }
+      to{
+        width: 100%;
+        font-size: 20px;
+      }
+    }
+    @keyframes blop2{
+      from{
+        margin-left: 100%;
+        width: 0px;
+        font-size: 0px;
+      }
+      to{
+        margin-left: 0;
+        width: 100%;
+        font-size: 20px;
+      }
+    }
+    .intro{
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100vh;
+      background-color: #161616;
+      transition: 1s;
+    }
+    .logo-header{
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: #fff;
+    }
+    .logo{
+      position: relative;
+      display: inline-block;
+      bottom: -20px;
+      opacity: 0;
+    }
+    .logo.active{
+      bottom: 0;
+      opacity: 1;
+      transition: ease-in-out 0.5s;
+    }
+    .logo.fade{
+      bottom: 150px;
+      opacity: 0;
+      transition: ease-in-out 0.5s;
+    }
+    .container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+    }
+    .user-profile {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: var(--darkgrey-color);
+        color: #fff;/*var(--primary-color);*/
+        width: 580px;
+        border: 1px solid transparent;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        transition: 1s;
+    }
+    #username-display{
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        transition: 1s;
+    }
+
+    .user-profile img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 20px;
+    }
+    #logout{
+      background-color: #ff2963;/*#ff5722;*/
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    #username-display{
+      font-weight: bold;
+      font-size: 40px;
+      transition: 1s;
+    }
+    #Löschbtn {
+      display: none;
+      background-color: #490d61;/*var(--bcolor-color);*/
+      color: white;
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      height: 30px;
+      width: 100%;
+      margin-top: 10px;
+      transition: 1s;
+    }
+    #Editbtn {
+      display: none;
+      background-color: #490d61;/*var(--bcolor-color);*/
+      color: var(--primary-color);
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      height: 30px;
+      width: 100%;
+      margin-top: 10px;
+      transition: 1s;
+    }
+    #Breakbtn {
+      display: none;
+      background-color: #490d61;/*var(--bcolor-color);*/
+      color: var(--primary-color);
+      border: none;
+      border-radius: 10px;
+      text-align: center;
+      height: 30px;
+      width: 100%;
+      margin-top: 10px;
+      transition: 1s;
+    }
+    #speakon {
+      background-color: #ff2963;/*#ff5722;*/
+      color: #fff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 15px;
+      margin-left: 5px;
+      transition: background-color 0.3s;
+    }
+  </style>
+</head>
+  
+<body>
+  <div class="intro">
+      <h1 class="logo-header">
+        <span class="logo">A</span><span class="logo">I</span><span class="logo">l</span><span class="logo">u</span><span class="logo">r</span><span class="logo">y</span>
+      </h1>
+  </div>
+  <script>
+    let intro = document.querySelector('.intro');
+    let logo = document.querySelector('.logo-header');
+    let logoSpan = document.querySelectorAll('.logo');
+    window.addEventListener('DOMContentLoaded', ()=>{
+      setTimeout(()=>{
+        logoSpan.forEach((span, idx)=>{
+          setTimeout(()=>{
+            span.classList.add('active');
+          }, (idx + 1) * 200)
+        })
+        setTimeout(()=>{
+          logoSpan.forEach((span, idx)=>{
+            setTimeout(()=>{
+              span.classList.remove('active');
+            }, (idx + 1) * 50)
+          })
+        },2000)
+        setTimeout(()=>{
+          intro.style.top = '-100vh';
+        },3000)
+      })
+    })
+  </script>
+  <div class="container">
+      <div class="user-profile" id="user-profile">
+          <div>
+              <img src="default_avatar.png" alt="User Avatar" id="user-avatar">
+              <span id="username-display">Guest</span>
+              <a id="logout" href="profile">log out</a><button id="speakon">speak: on</button>
+          </div>
+      </div>
+  </div>
+  <script>
+      document.addEventListener("DOMContentLoaded", function () {
+          const userProfile = document.getElementById("user-profile");
+          const usernameDisplay = document.getElementById("username-display");
+          const userAvatar = document.getElementById("user-avatar");
+          
+
+          // Load user profile from localStorage
+          loadUserProfile();
+
+          function loadUserProfile() {
+              const savedUsername = localStorage.getItem("username");
+              const savedAvatar = localStorage.getItem("avatar");
+
+              if (savedUsername) {
+                  usernameDisplay.textContent = savedUsername;
+              }
+
+              if (savedAvatar) {
+                  userAvatar.src = savedAvatar;
+              }
+          }
+      });
+      
+  </script>
+  <div class="chat-container">
+    <h1 id="einstellungen" onclick="showmenu()">#</h1>
+    <div class="nav-links" id="navlinks">
+      <ul>
+        <li><a class="bcft" style="color: var(--primary-color); display: none;" onclick="change_mood()">Dark theme</a></li>
+        <br>
+        <br>
+        <li><a class="bcft" style="color: var(--primary-color);" onclick="setinputvalue()">Random</a></li>
+        <br>
+        <br>
+        <li><a class="bcft" id="btn3" style="color: var(--primary-color);" onclick="helpbtn()">Help</a></li>
+        <br>
+        <br>
+        <li><a class="bcft" id="fontS" style="color: var(--primary-color);" onclick="showfonts()">Font size ></a></li>
+        <br>
+        <br>
+        <li><a class="bcft1" id="btnone" style="color: var(--primary-color);display: none;" onclick="font1()">big</a></li>
+        <br>
+        <li><a class="bcft1" id="btnthree" style="color: var(--primary-color);display: none;" onclick="font3()">small</a></li>
+
+      </ul>
+    </div>
+    
+    <div class="chat-messages" id="chat-messages">
+      <h2 id="nmy" style="text-align: center;color: var(--primary-color);">no messages yet</h2>
+      <!-- nmy Hier werden die Chat-Nachrichten eingefügt -->
+    </div>
+    <button id="Breakbtn">Break</button>
+    <button id="Löschbtn">Trash</button>
+    <button id="Editbtn">Edit</button>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message...">
+      <button id="button1" onclick="sendMassaga()">Send</button>
+      <button id="button2" onclick="newknowledge()">Teach</button>
+      <button id="button3" onclick="learnnonewthing()">Skip</button>
+    </div>
+  </div>
+  <script>
+    const myInput = document.getElementById('user-input');
+    if(myInput.value == ''){
+      document.getElementById('button1').style.backgroundColor = "lightgrey";
+      document.getElementById('button2').style.backgroundColor = "lightgrey";
+
+    }
+    if (myInput.value !== ''){
+      document.getElementById('button1').style.backgroundColor = "#007bff";
+      document.getElementById('button2').style.backgroundColor = "#007bff";
+    }
+
+
+    /*keydown*/
+    myInput.addEventListener('keyup', () =>{
+      if (myInput.value !== ''){
+        document.getElementById('button1').style.backgroundColor = "#007bff";
+        document.getElementById('button2').style.backgroundColor = "#007bff";
+
+
+      }else{
+        document.getElementById('button1').style.backgroundColor = "lightgrey";
+        document.getElementById('button2').style.backgroundColor = "lightgrey";
+
+
+      }
+
+    })
+  </script>
+  <h6 style="color: transparent;" id="remember"></h6>
+  <h6 style="color: transparent;" id="bot-response"></h6>
+  <h6 style="color: transparent;" id="idk">I dont know the answer. Please enter my answer to that question</h6>
+  <script>
+    // Function to handle message element click
+    let ivif = document.getElementById('user-input');
+    let button1 = document.getElementById('button1');
+    let teach = document.getElementById('button2');
+    let skip = document.getElementById('button3');
+    ivif.addEventListener('keydown', () => {
+      // Check if the Enter key is pressed
+      if (event.key === 'Enter'){
+        // click the send btn
+        if (button1.style.display == "block"){
+          button1.click();
+        }else if (button1.style.display == "none"){
+          teach.click();
+        }else {
+          skip.click();
+        }
+      }
+    })
+    function handleEditMessage(event) {
+        const clickedElement = event.target;
+        const backgroundColor = window.getComputedStyle(clickedElement).getPropertyValue('background-color').toLowerCase();
+        if (clickedElement.classList.contains('sent')) {
+            if (clickedElement.style.border == '2px solid var(--primary-color)'){
+              clickedElement.style.border = 'none';
+            }else {
+              clickedElement.style.border = '2px solid var(--primary-color)';
+            }
+            const messageContent = clickedElement.textContent;
+            const messageID = clickedElement.dataset.id;
+            const löschbtn = document.getElementById('Löschbtn');
+            const editbtn = document.getElementById('Editbtn');
+            const Breakbtn = document.getElementById('Breakbtn');
+            löschbtn.style.display = 'block';
+            löschbtn.addEventListener('click', () => {
+                if (clickedElement.style.border == '2px solid var(--primary-color)'){
+                  clickedElement.remove();
+                  löschbtn.style.display = 'none';
+                  editbtn.style.display = 'none';
+                  Breakbtn.style.display = 'none';
+                  clickedElement.style.border = 'none';
+                }
+            });
+            editbtn.style.display = 'block';
+            editbtn.addEventListener('click', () => {
+              if (clickedElement.style.border == '2px solid var(--primary-color)'){
+                const inputElement = document.createElement('input');
+                inputElement.type = 'text';
+                inputElement.value = messageContent;
+
+                // Replace the text content with an input field for editing
+                clickedElement.textContent = '';
+                clickedElement.appendChild(inputElement);
+
+                inputElement.focus();
+
+                // Add event listener to save the edited message on input blur
+                inputElement.addEventListener('blur', function() {
+                    saveEditedMessage(clickedElement, inputElement);
+                });
+                löschbtn.style.display = 'none';
+                editbtn.style.display = 'none';
+                Breakbtn.style.display = 'none';
+                
+                //for each clickedElement border = 'none' 
+                for (const element of document.querySelectorAll('.sent')) {
+                  element.style.border = 'none';
+                }
+                for (const element2 of document.querySelectorAll('.received')) {
+                  element2.style.border = 'none';
+                }
+              }
+            });
+            Breakbtn.style.display = 'block';
+            Breakbtn.addEventListener('click', () => {
+              löschbtn.style.display = 'none';
+              editbtn.style.display = 'none';
+              Breakbtn.style.display = 'none';
+              clickedElement.style.border = 'none';
+            });
+            if (clickedElement.style.border == '2px solid var(--primary-color)'){
+              clickedElement.style.border = '2px solid var(--primary-color)';
+              löschbtn.style.display = 'block';
+              editbtn.style.display = 'block';
+              Breakbtn.style.display = 'block';
+            }else {
+              clickedElement.style.border = 'none';
+            }
+        }else {
+          if (clickedElement.style.border == '2px solid var(--primary-color)'){
+            clickedElement.style.border = 'none';
+          }else {
+            clickedElement.style.border = '2px solid var(--primary-color)';
+          }
+          const messageContent = clickedElement.textContent;
+          const messageID = clickedElement.dataset.id;
+          const löschbtn = document.getElementById('Löschbtn');
+          const editbtn = document.getElementById('Editbtn');
+          const Breakbtn = document.getElementById('Breakbtn');
+          löschbtn.style.display = 'block';
+          löschbtn.addEventListener('click', () => {
+              if (clickedElement.style.border == '2px solid var(--primary-color)'){
+                clickedElement.remove();
+                löschbtn.style.display = 'none';
+                editbtn.style.display = 'none';
+                Breakbtn.style.display = 'none';
+                clickedElement.style.border = 'none';
+              }
+          });
+          editbtn.style.display = 'none';
+          Breakbtn.style.display = 'block';
+          Breakbtn.addEventListener('click', () => {
+            löschbtn.style.display = 'none';
+            editbtn.style.display = 'none';
+            Breakbtn.style.display = 'none';
+            clickedElement.style.border = 'none';
+          });
+          if (clickedElement.style.border == '2px solid var(--primary-color)'){
+            clickedElement.style.border = '2px solid var(--primary-color)';
+            löschbtn.style.display = 'block';
+            editbtn.style.display = 'none';
+            Breakbtn.style.display = 'block';
+          }else {
+            clickedElement.style.border = 'none';
+          }
+        }
+    }
+
+    function saveEditedMessage(messageElement, inputElement) {
+        const editedMessage = inputElement.value;
+
+        messageElement.textContent = editedMessage;
+    }
+    document.addEventListener('click', function(event) {
+        const clickedElement = event.target;
+
+        if (clickedElement.classList.contains('message')) {
+            console.log('Nachricht angeklickt!');
+            handleEditMessage(event);
+            // Hier können Sie weitere Aktionen ausführen, die beim Klicken einer Nachricht durchgeführt werden sollen
+        }
+    });
+    const messageElements = document.querySelectorAll('.message');
+    messageElements.forEach(messageElement => {
+        messageElement.addEventListener('click', handleEditMessage);
+    });
+    // real v
+    function sendMassaga(){
+        document.getElementById('button1').style.backgroundColor = "lightgrey";
+        document.getElementById('button2').style.backgroundColor = "lightgrey";
+        document.getElementById("remember").textContent = document.getElementById("user-input").value;
+        document.getElementById("nmy").style.display = "none";
+        //say();
+
+
+        setTimeout(sendMessage, 100);
+    }
+
+    function sendMessage() {
+        var userInput = document.getElementById('user-input');
+        var userMessage = userInput.value.trim();
+        if (userMessage !== '') {
+            addMessage(userMessage, 'sent');
+
+            // Simulierte Antwort vom Bot
+            getBotResponse(userMessage)
+                .then(response => {
+
+                    setTimeout(addMessage, 500, response, 'received')
+                    document.getElementById('bot-response').textContent = response;
+                    // Hier wird der Wert des <h1>-Elements aktualisiert
+                    // Scrollen zum Ende der Chat-Nachrichten
+                    var chatMessages = document.getElementById('chat-messages');
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                })
+                .catch(error => console.error('Bot response error:', error));
+
+            userInput.value = '';
+            
+
+
+        }
+    }
+
+
+    function getBotResponse(userMessage) {
+        return fetch('/process_input', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ user_input: userMessage })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(response => {
+            if (response.message.indexOf("I dont know the answer. Please enter my answer to that question") !== -1) {
+              learnnewthing();
+            }
+            else if (response.message.indexOf("Sorry but i dont know your Name") !== -1) {
+              let name = document.getElementById("username-display");
+              return name.textContent;
+            }
+            else if (response.message.indexOf("Yes (Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = "yes " + name.textContent;
+              return text;
+            }
+            else if (response.message.indexOf("hello (Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = "hello " + name.textContent;
+              return text;
+            }
+            else if (response.message.indexOf("(Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = name.textContent;
+              return text;
+            }
+            else if (response.message.indexOf("hallo (Username)") !== -1) {
+              let name = document.getElementById("username-display");
+              let text = "hallo " + name.textContent;
+              return text;
+            }
+            return response.message;
+
+        })
+        .catch(error => {
+            console.error('Error fetching bot response:', error);
+            return 'Sorry, I encountered an error. Please try again.';
+        });
+    }
+
+
+    function newknowledge(){
+        var userInput = document.getElementById('user-input');
+        var userMessage2 = userInput.value.trim();
+        if (userMessage2 !== '') {
+            addMessage(userMessage2, 'sent');
+            
+
+            // Simulierte Antwort vom Bot
+            getBotResponse2(userMessage2)
+                .then(response => {
+                    setTimeout(addMessage(response, 'received'), 1000);
+                    
+                    // Scrollen zum Ende der Chat-Nachrichten
+                    var chatMessages = document.getElementById('chat-messages');
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                })
+                .catch(error => console.error('Bot response error:', error));
+
+            userInput.value = '';
+        }
+    }
+
+    function getBotResponse2(userMessage2) {
+        // Daten für die POST-Anfrage vorbereiten
+        learnnonewthing();
+        var data = { user_input: userMessage2, new_question: document.getElementById("remember").textContent };
+
+        // AJAX-Anfrage senden
+        return fetch('/new_knowledge', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log(data); // Ausgabe der Antwort vom Server
+            // Hier können Sie weitere Aktionen basierend auf der Serverantwort durchführen
+            return data.message;
+        })
+        .catch(error => console.error('Error fetching bot response:', error));
+    }
+
+    function learnnewthing(){
+        document.getElementById("button1").style.display = "none";
+        document.getElementById("button2").style.display = "block";
+        document.getElementById("button3").style.display = "block";
+        document.getElementById("user-input").placeholder = "Enter the Answer to that question here...";
+    }
+    function learnnonewthing(){
+        document.getElementById("button1").style.display = "block";
+        document.getElementById("button2").style.display = "none";
+        document.getElementById("button3").style.display = "none";
+        document.getElementById("user-input").placeholder = "Type your message...";
+    }
+    var font2 = 'h3';
+    function addMessage(text, type) {
+      
+        var chatMessages = document.getElementById('chat-messages');
+        var messageElement = document.createElement(font2);
+        messageElement.classList.add('message', type);
+        messageElement.id = 'messageE';
+        messageElement.textContent = text;
+        chatMessages.appendChild(messageElement);
+        say2(messageElement.textContent);
+
+
+    }
+
+    function change_mood(){
+      document.body.classList.toggle("dark-theme");
+      if(document.body.classList.contains("dark-theme")){
+
+        document.querySelector(".bcft").textContent = "Light theme";
+      } else {
+
+        document.querySelector(".bcft").textContent = "Dark theme";
+      }
+    }
+    var navlinks = document.getElementById("navlinks");
+    function showmenu(){
+      if(navlinks.style.display == "none"){
+        navlinks.style.display = "block";
+      }else{
+        navlinks.style.display = "none";
+      }
+    }
+    var btnfs = document.querySelector(".bcft1");
+    var btnf1 = document.getElementById("btnone");
+    var btnf3 = document.getElementById("btnthree");
+    function showfonts(){
+      if(btnfs.style.display == "none"){
+        document.getElementById("fontS").textContent = "Font size v";
+        btnf1.style.display = "block";
+        btnf3.style.display = "block";
+      }else{
+        document.getElementById("fontS").textContent = "Font size <";
+        btnf1.style.display = "none";
+        btnf3.style.display = "none";
+      }
+    }
+    function font1(){
+      font2 = 'h1';
+    }
+    function font3(){
+      font2 = 'h3';
+    }
+    function setinputvalue() {
+      const rand = ['Hi', 'Hello', 'How are you', 'How are you doing', 'What is your name', 'Who are you?', 'What are you?','What is Architecture','Whats a Computer'];
+      const randq = rand[Math.floor(Math.random() * rand.length)];
+      const input = document.getElementById('user-input');
+      input.value = randq;
+    }
+    function helpbtn(){
+      document.getElementById("btn3").textContent = "this function does not exist";
+      setTimeout(function(){
+          document.getElementById("btn3").textContent = "Help";
+      }, 5000);
+    }
+    /*function isDarkMode() {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            return true;
+        } else {
+            return false;
+        }
+    }*/
+
+    // Function to update the mode information
+    /*function updateModeInfo() {
+        var modeInfo = document.querySelector('.bcft');
+        if (isDarkMode()) {
+            modeInfo.textContent = "Light theme";
+            change_mood()
+        }else {
+            modeInfo.textContent = "Dark theme";
+            change_mood()
+        }
+    }
+
+    // Call the function initially
+    updateModeInfo();
+
+    // Listen for changes in mode preference
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', updateModeInfo);*/
+    let speech = new SpeechSynthesisUtterance();
+
+    let voices = [];
+
+    let speakon = document.getElementById("speakon");
+
+    window.speechSynthesis.onvoiceschanged = () => {
+      voices = window.speechSynthesis.getVoices();
+      speech.voice = voices[0];
+
+      voices.forEach((voice, i) => (voiceSelect.options[i] = new Option(voice.name, i)));
+    }
+    function say2(textfs) {
+      if (speakon.textContent == "speak: on"){
+        speech.text = textfs;
+        window.speechSynthesis.speak(speech);
+      }
+    }
+    speakon.addEventListener("click", () => {
+      speakonoff();
+    });
+    function speakonoff() {
+      if (speakon.textContent == "speak: on") {
+        speakon.textContent = "speak: off";
+      }else {
+        speakon.textContent = "speak: on";
+      }
+    }
+    /*speakon.addEventListener("click", function() {
+      var speech1 = true;
+      window.SpeechRecognition = window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+
+      recognition.addEventListener('result', (e) => {
+        const transcript = Array.from(e.results)
+        .map(result =>result[0])
+        .map(result => result.transcript)
+        document.getElementById("user-input").value = transcript;
+      });
+      if (speech1 == true){
+        recognition.start();
+      }
+    });*/
+    /*function say() {
+      speech.text = document.getElementById("remember").textContent;
+      window.speechSynthesis.speak(speech);
+    }*/
+  </script>
+</body>
+</html>
